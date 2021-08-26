@@ -245,12 +245,13 @@ def about():
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
     smtp_server = os.getenv('SMTP_SERVER')
+    user = os.getenv('EMAIL_APP_USER')
     if request.method == 'GET':
         page_header = 'Contact Me'
     else:
         send_email(request.form)
         page_header = 'Successfully sent your message'
-    return render_template('contact.html', page_header=page_header, smtp_server=smtp_server)
+    return render_template('contact.html', page_header=page_header, smtp_server=smtp_server, user=user)
 
 
 if __name__ == "__main__":
