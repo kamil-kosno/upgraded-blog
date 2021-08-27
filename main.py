@@ -5,11 +5,11 @@ from forms import PostForm, RegisterForm, LoginForm, CommentForm
 from flask_bootstrap import Bootstrap
 from emailmanager import send_email
 from flask_sqlalchemy import SQLAlchemy
-from flask_ckeditor import CKEditor, CKEditorField
+from flask_ckeditor import CKEditor
 from datetime import datetime
-from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
+from flask_login import UserMixin, login_user, LoginManager, current_user, logout_user
 from passmanager import PasswordManager
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash
 from functools import wraps
 import hashlib
 import setup
@@ -22,7 +22,7 @@ Bootstrap(app)
 ckeditor = CKEditor(app)
 
 ##Connect to Database
-app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = os.getenv("APP_SECRET_KEY")
 login_manager.init_app(app)
