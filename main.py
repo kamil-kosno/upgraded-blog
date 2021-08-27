@@ -29,7 +29,7 @@ login_manager.init_app(app)
 
 try:
     db = SQLAlchemy(app)
-except exc.NoSuchModuleError:
+except:
     app.config['SQLALCHEMY_DATABASE_URI'] = app.config['SQLALCHEMY_DATABASE_URI'].\
         replace('postgres://', 'postgresql://', 1)
     db = SQLAlchemy(app)
