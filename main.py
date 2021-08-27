@@ -22,17 +22,14 @@ Bootstrap(app)
 ckeditor = CKEditor(app)
 
 ##Connect to Database
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+DB_URL = os.getenv('DATABASE_URL')
+if DB_URL.startswith('postgres://'):
+    DB_URL = DB_URL.replace('postgres://', 'postgresql://', 1)
+app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = os.getenv("APP_SECRET_KEY")
 login_manager.init_app(app)
-
-try:
-    db = SQLAlchemy(app)
-except:
-    app.config['SQLALCHEMY_DATABASE_URI'] = app.config['SQLALCHEMY_DATABASE_URI'].\
-        replace('postgres://', 'postgresql://', 1)
-    db = SQLAlchemy(app)
+db = SQLAlchemy(app)
 
 
 class Post(db.Model):
