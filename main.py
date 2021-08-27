@@ -1,5 +1,5 @@
 import os
-
+from sqlalchemy import exc
 from flask import Flask, render_template, request, redirect, url_for, flash
 from forms import PostForm, RegisterForm, LoginForm, CommentForm
 from flask_bootstrap import Bootstrap
@@ -26,7 +26,13 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = os.getenv("APP_SECRET_KEY")
 login_manager.init_app(app)
-db = SQLAlchemy(app)
+
+try:
+    db = SQLAlchemy(app)
+except exc.NoSuchModuleError:
+    app.config['SQLALCHEMY_DATABASE_URI'] = app.config['SQLALCHEMY_DATABASE_URI'].\
+        replace('postgres://', 'postgresql://', 1)
+    db = SQLAlchemy(app)
 
 
 class Post(db.Model):
