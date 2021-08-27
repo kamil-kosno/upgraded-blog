@@ -14,8 +14,6 @@ from functools import wraps
 import hashlib
 import setup
 
-# postgres://vszkiqjapbagzv:e06387cbbf6e7b8024b013fe1df2f7e516d485b59d84b4e8870eed5874e24907@ec2-54-156-151-232.compute-1.amazonaws.com:5432/dchm92j6sq4uvl
-
 GRAVATAR_API_URL = "https://www.gravatar.com/avatar/"
 DB_NAME = 'blog.db'
 login_manager = LoginManager()
@@ -179,7 +177,6 @@ def new_post():
     if request.method == 'POST':
         if form.validate_on_submit():
             if form.blog_id.data:
-                print('this is wrong')
                 post = get_posts(blog_id=int(form.blog_id.data))
                 post.title = form.title.data
                 post.body = form.content.data
